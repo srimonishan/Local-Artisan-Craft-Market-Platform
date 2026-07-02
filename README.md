@@ -116,18 +116,6 @@ Local-Artisan-Craft-Market-Platform/
    VALUES ('admin', 'admin123', 'System Administrator');
    ```
 
-## 📸 Screenshots
-
-| Admin Login | Main Dashboard |
-|:---:|:---:|
-| <img src="https://via.placeholder.com/400x250.png?text=Login+Screen" alt="Login Screen" width="400"/> | <img src="https://via.placeholder.com/400x250.png?text=Dashboard+Screen" alt="Dashboard" width="400"/> |
-
-| Product Management | Artisan Directory |
-|:---:|:---:|
-| <img src="https://via.placeholder.com/400x250.png?text=Product+Management" alt="Products" width="400"/> | <img src="https://via.placeholder.com/400x250.png?text=Artisan+Management" alt="Artisans" width="400"/> |
-
-*(Note: Replace placeholder image URLs with actual paths local to the repo once snapshots are taken, e.g., `/Screenshots/login.png`)*
-
 ## 🔮 Future Improvements
 
 - [ ] Implement role-based access control (RBAC).
@@ -146,7 +134,7 @@ This project successfully demonstrated the application of core Object-Oriented p
 
 ## 👥 Contributors
 
-- **Srimonishan** - *Lead Developer / UI Designer* - [GitHub Profile](https://github.com/srimonishan)
+- **Srimonishan** - *Lead Developer / Ai engineer* - [GitHub Profile](https://github.com/srimonishan)
 
 ## 📄 License
 
