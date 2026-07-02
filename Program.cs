@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using Craft_Market_Platform.Forms;
 
 namespace Craft_Market_Platform
 {
@@ -14,7 +15,7 @@ namespace Craft_Market_Platform
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            Application.Run(new Form1());
+            Application.Run(new LoginForm());
         }
     }
 }
