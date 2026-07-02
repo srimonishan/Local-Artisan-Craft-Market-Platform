@@ -4,9 +4,9 @@ using Craft_Market_Platform.Database;
 
 namespace Craft_Market_Platform
 {
-    public partial class LoginForm : Form
+    public partial class Form1 : Form
     {
-        public LoginForm()
+        public Form1()
         {
             InitializeComponent();
         }

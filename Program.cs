@@ -14,7 +14,7 @@ namespace Craft_Market_Platform
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            Application.Run(new LoginForm());
+            Application.Run(new Form1());
         }
     }
 }
