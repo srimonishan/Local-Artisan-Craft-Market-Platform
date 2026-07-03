@@ -71,12 +71,19 @@ namespace Craft_Market_Platform.Forms
 
         private void InitializeComponent()
         {
+            // Instantiate controls (instantiate -> set properties -> add to Controls)
             this.lblName = new Label();
             this.txtName = new TextBox();
             this.lblDescription = new Label();
             this.txtDescription = new TextBox();
             this.lblPrice = new Label();
             this.numPrice = new NumericUpDown();
+            this.lblStock = new Label();
+            this.numStock = new NumericUpDown();
+            this.lblArtisan = new Label();
+            this.cbArtisan = new ComboBox();
+            this.lblCategory = new Label();
+            this.cbCategory = new ComboBox();
             this.btnSave = new Button();
             this.btnCancel = new Button();
 
@@ -86,17 +93,20 @@ namespace Craft_Market_Platform.Forms
             this.lblName.AutoSize = true;
             this.lblName.Location = new System.Drawing.Point(12, 15);
             this.lblName.Text = "Product Name";
+
             // 
             // txtName
             // 
             this.txtName.Location = new System.Drawing.Point(120, 12);
             this.txtName.Width = 260;
+
             // 
             // lblDescription
             // 
             this.lblDescription.AutoSize = true;
             this.lblDescription.Location = new System.Drawing.Point(12, 50);
             this.lblDescription.Text = "Description";
+
             // 
             // txtDescription
             // 
@@ -104,12 +114,14 @@ namespace Craft_Market_Platform.Forms
             this.txtDescription.Width = 260;
             this.txtDescription.Height = 80;
             this.txtDescription.Multiline = true;
+
             // 
             // lblPrice
             // 
             this.lblPrice.AutoSize = true;
             this.lblPrice.Location = new System.Drawing.Point(12, 140);
             this.lblPrice.Text = "Price";
+
             // 
             // numPrice
             // 
@@ -124,24 +136,13 @@ namespace Craft_Market_Platform.Forms
             this.lblStock.AutoSize = true;
             this.lblStock.Location = new System.Drawing.Point(260, 140);
             this.lblStock.Text = "Stock";
+
             // 
             // numStock
             // 
             this.numStock.Location = new System.Drawing.Point(310, 138);
             this.numStock.Maximum = 1000000;
             this.numStock.Width = 70;
-            // 
-            // btnSave
-            // 
-            this.btnSave.Location = new System.Drawing.Point(120, 180);
-            this.btnSave.Text = "Save";
-            this.btnSave.Click += BtnSave_Click;
-            // 
-            // btnCancel
-            // 
-            this.btnCancel.Location = new System.Drawing.Point(220, 180);
-            this.btnCancel.Text = "Cancel";
-            this.btnCancel.Click += (s, e) => this.DialogResult = DialogResult.Cancel;
 
             // 
             // lblArtisan
@@ -149,24 +150,41 @@ namespace Craft_Market_Platform.Forms
             this.lblArtisan.AutoSize = true;
             this.lblArtisan.Location = new System.Drawing.Point(12, 135);
             this.lblArtisan.Text = "Artisan";
+
             // 
             // cbArtisan
             // 
             this.cbArtisan.Location = new System.Drawing.Point(120, 165);
             this.cbArtisan.Width = 260;
             this.cbArtisan.DropDownStyle = ComboBoxStyle.DropDownList;
+
             // 
             // lblCategory
             // 
             this.lblCategory.AutoSize = true;
             this.lblCategory.Location = new System.Drawing.Point(12, 165);
             this.lblCategory.Text = "Category";
+
             // 
             // cbCategory
             // 
             this.cbCategory.Location = new System.Drawing.Point(120, 195);
             this.cbCategory.Width = 260;
             this.cbCategory.DropDownStyle = ComboBoxStyle.DropDownList;
+
+            // 
+            // btnSave
+            // 
+            this.btnSave.Location = new System.Drawing.Point(120, 220);
+            this.btnSave.Text = "Save";
+            this.btnSave.Click += BtnSave_Click;
+
+            // 
+            // btnCancel
+            // 
+            this.btnCancel.Location = new System.Drawing.Point(220, 220);
+            this.btnCancel.Text = "Cancel";
+            this.btnCancel.Click += (s, e) => this.DialogResult = DialogResult.Cancel;
 
             // 
             // AddCraftItemForm
