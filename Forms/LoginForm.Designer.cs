@@ -47,7 +47,7 @@ namespace Craft_Market_Platform.Forms
             this.lblLogoSub.ForeColor = System.Drawing.Color.White;
             this.lblLogoSub.Location = new System.Drawing.Point(90, 215);
             this.lblLogoSub.Name = "lblLogoSub";
-            this.lblLogoSub.Size = new System.Drawing.Size(100, 21);
+            this.lblLogoSub.Size = new System.Drawing.Size(126, 28);
             this.lblLogoSub.TabIndex = 2;
             this.lblLogoSub.Text = "Admin Portal";
             this.lblLogoSub.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -70,7 +70,7 @@ namespace Craft_Market_Platform.Forms
             this.lblTitle.ForeColor = System.Drawing.Color.White;
             this.lblTitle.Location = new System.Drawing.Point(344, 46);
             this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(201, 37);
+            this.lblTitle.Size = new System.Drawing.Size(248, 46);
             this.lblTitle.TabIndex = 1;
             this.lblTitle.Text = "Admin Sign In";
             // 
@@ -81,16 +81,16 @@ namespace Craft_Market_Platform.Forms
             this.lblUsername.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(203)))), ((int)(((byte)(213)))), ((int)(((byte)(225)))));
             this.lblUsername.Location = new System.Drawing.Point(347, 126);
             this.lblUsername.Name = "lblUsername";
-            this.lblUsername.Size = new System.Drawing.Size(75, 20);
+            this.lblUsername.Size = new System.Drawing.Size(97, 25);
             this.lblUsername.TabIndex = 2;
             this.lblUsername.Text = "Username";
             // 
             // txtUsername
             // 
             this.txtUsername.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtUsername.Location = new System.Drawing.Point(351, 149);
+            this.txtUsername.Location = new System.Drawing.Point(352, 154);
             this.txtUsername.Name = "txtUsername";
-            this.txtUsername.Size = new System.Drawing.Size(380, 33);
+            this.txtUsername.Size = new System.Drawing.Size(380, 39);
             this.txtUsername.TabIndex = 3;
             // 
             // lblPassword
@@ -100,7 +100,7 @@ namespace Craft_Market_Platform.Forms
             this.lblPassword.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(203)))), ((int)(((byte)(213)))), ((int)(((byte)(225)))));
             this.lblPassword.Location = new System.Drawing.Point(347, 212);
             this.lblPassword.Name = "lblPassword";
-            this.lblPassword.Size = new System.Drawing.Size(70, 20);
+            this.lblPassword.Size = new System.Drawing.Size(91, 25);
             this.lblPassword.TabIndex = 4;
             this.lblPassword.Text = "Password";
             // 
@@ -109,7 +109,7 @@ namespace Craft_Market_Platform.Forms
             this.txtPassword.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtPassword.Location = new System.Drawing.Point(351, 235);
             this.txtPassword.Name = "txtPassword";
-            this.txtPassword.Size = new System.Drawing.Size(380, 33);
+            this.txtPassword.Size = new System.Drawing.Size(380, 39);
             this.txtPassword.TabIndex = 5;
             this.txtPassword.UseSystemPasswordChar = true;
             // 
@@ -142,7 +142,7 @@ namespace Craft_Market_Platform.Forms
             this.chkShowPassword.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(203)))), ((int)(((byte)(213)))), ((int)(((byte)(225)))));
             this.chkShowPassword.Location = new System.Drawing.Point(351, 274);
             this.chkShowPassword.Name = "chkShowPassword";
-            this.chkShowPassword.Size = new System.Drawing.Size(118, 21);
+            this.chkShowPassword.Size = new System.Drawing.Size(148, 27);
             this.chkShowPassword.TabIndex = 6;
             this.chkShowPassword.Text = "Show Password";
             this.chkShowPassword.UseVisualStyleBackColor = true;
@@ -155,14 +155,14 @@ namespace Craft_Market_Platform.Forms
             this.lblError.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(68)))), ((int)(((byte)(68)))));
             this.lblError.Location = new System.Drawing.Point(348, 100);
             this.lblError.Name = "lblError";
-            this.lblError.Size = new System.Drawing.Size(38, 17);
+            this.lblError.Size = new System.Drawing.Size(47, 23);
             this.lblError.TabIndex = 9;
             this.lblError.Text = "Error";
             this.lblError.Visible = false;
             // 
             // LoginForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.lblError);
@@ -186,6 +186,7 @@ namespace Craft_Market_Platform.Forms
             this.pnlLeft.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
+
         }
 
         private System.Windows.Forms.Panel pnlLeft;
