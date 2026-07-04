@@ -38,6 +38,21 @@ namespace Craft_Market_Platform.Forms
             this.btnAddCraftItem.Text = "Add Craft Item";
             this.btnAddCraftItem.UseVisualStyleBackColor = true;
             this.btnAddCraftItem.Click += new System.EventHandler(this.btnAddCraftItem_Click);
+
+            // 
+            // btnViewArtisans
+            // 
+            this.btnViewArtisans = new System.Windows.Forms.Button();
+            this.btnViewArtisans.Location = new System.Drawing.Point(340, 80);
+            this.btnViewArtisans.Name = "btnViewArtisans";
+            this.btnViewArtisans.Size = new System.Drawing.Size(140, 30);
+            this.btnViewArtisans.TabIndex = 4;
+            this.btnViewArtisans.Text = "View Artisans";
+            this.btnViewArtisans.BackColor = System.Drawing.Color.FromArgb(10, 132, 255);
+            this.btnViewArtisans.ForeColor = System.Drawing.Color.White;
+            this.btnViewArtisans.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnViewArtisans.FlatAppearance.BorderSize = 0;
+            this.btnViewArtisans.Click += new System.EventHandler(this.btnViewArtisans_Click);
             // 
             // dgvProducts
             // 
@@ -102,6 +117,7 @@ namespace Craft_Market_Platform.Forms
             this.Controls.Add(this.lblWelcome);
             this.Controls.Add(this.btnAddCraftItem);
             this.Controls.Add(this.btnDelete);
+            this.Controls.Add(this.btnViewArtisans);
             this.Controls.Add(this.dgvProducts);
             this.Controls.Add(this.lblTotalProducts);
             this.Controls.Add(this.lblTotalArtisans);
@@ -119,6 +135,7 @@ namespace Craft_Market_Platform.Forms
         private System.Windows.Forms.Button btnAddCraftItem;
         private System.Windows.Forms.DataGridView dgvProducts;
         private System.Windows.Forms.Button btnDelete;
+        private System.Windows.Forms.Button btnViewArtisans;
         private System.Windows.Forms.Label lblTotalProducts;
         private System.Windows.Forms.Label lblTotalArtisans;
         private System.Windows.Forms.Label lblTotalOrders;

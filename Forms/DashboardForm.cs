@@ -39,6 +39,14 @@ namespace Craft_Market_Platform.Forms
             }
         }
 
+        private void btnViewArtisans_Click(object sender, EventArgs e)
+        {
+            using (var f = new ArtisanListForm())
+            {
+                f.ShowDialog(this);
+            }
+        }
+
         private void LoadProducts()
         {
             try
