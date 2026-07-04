@@ -48,6 +48,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Database\DatabaseConnection.cs" />
+    <Compile Include="Forms\AddArtisanQuickForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Forms\AddCraftItemForm.cs">
       <SubType>Form</SubType>
     </Compile>

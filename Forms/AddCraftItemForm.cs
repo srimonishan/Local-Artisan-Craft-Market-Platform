@@ -23,6 +23,7 @@ namespace Craft_Market_Platform.Forms
         private Button btnCancel;
 
         private DatabaseConnection _db = new DatabaseConnection();
+        private object _previousArtisanSelectedValue;
 
         public AddCraftItemForm()
         {
@@ -35,24 +36,13 @@ namespace Craft_Market_Platform.Forms
             // Populate artisans (only approved) and categories
             try
             {
+                LoadArtisansCombo();
+                // Categories
                 using (var conn = _db.GetConnection())
                 using (var cmd = conn.CreateCommand())
                 {
-                    conn.Open();
-
-                    // Artisans
-                    cmd.CommandText = "SELECT ArtisanID, FullName FROM Artisans WHERE Status = 'Approved' ORDER BY FullName";
-                    using (var reader = cmd.ExecuteReader())
-                    {
-                        var dt = new System.Data.DataTable();
-                        dt.Load(reader);
-                        cbArtisan.DisplayMember = "FullName";
-                        cbArtisan.ValueMember = "ArtisanID";
-                        cbArtisan.DataSource = dt;
-                    }
-
-                    // Categories
                     cmd.CommandText = "SELECT CategoryID, CategoryName FROM Categories ORDER BY CategoryName";
+                    conn.Open();
                     using (var reader = cmd.ExecuteReader())
                     {
                         var dtc = new System.Data.DataTable();
@@ -66,6 +56,77 @@ namespace Craft_Market_Platform.Forms
             catch (Exception ex)
             {
                 MessageBox.Show(this, "Failed to load artisans or categories: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        // Load artisans into the combo box and append a special "+ Add New Artisan" item
+        private void LoadArtisansCombo()
+        {
+            using (var conn = _db.GetConnection())
+            using (var cmd = conn.CreateCommand())
+            {
+                cmd.CommandText = "SELECT ArtisanID, FullName FROM Artisans WHERE Status = 'Approved' ORDER BY FullName";
+                conn.Open();
+                using (var reader = cmd.ExecuteReader())
+                {
+                    var dt = new System.Data.DataTable();
+                    dt.Load(reader);
+
+                    // Append special row for adding a new artisan
+                    var row = dt.NewRow();
+                    row["ArtisanID"] = -1; // sentinel value
+                    row["FullName"] = "+ Add New Artisan";
+                    dt.Rows.Add(row);
+
+                    cbArtisan.DisplayMember = "FullName";
+                    cbArtisan.ValueMember = "ArtisanID";
+                    cbArtisan.DataSource = dt;
+
+                    // Wire events to manage add-new flow. Use DropDown to capture previous selection.
+                    cbArtisan.DropDown -= CbArtisan_DropDown;
+                    cbArtisan.DropDown += CbArtisan_DropDown;
+                    cbArtisan.SelectionChangeCommitted -= CbArtisan_SelectionChangeCommitted;
+                    cbArtisan.SelectionChangeCommitted += CbArtisan_SelectionChangeCommitted;
+                }
+            }
+        }
+
+        private void CbArtisan_DropDown(object sender, EventArgs e)
+        {
+            // remember previous selection so we can restore if the user cancels adding a new artisan
+            _previousArtisanSelectedValue = cbArtisan.SelectedValue;
+        }
+
+        private void CbArtisan_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            try
+            {
+                var val = cbArtisan.SelectedValue;
+                if (val == null || val == System.DBNull.Value) return;
+
+                int id = Convert.ToInt32(val);
+                if (id != -1) return; // not the special item
+
+                // User chose to add a new artisan — open quick add popup
+                using (var f = new AddArtisanQuickForm())
+                {
+                    var res = f.ShowDialog(this);
+                    if (res == DialogResult.OK && f.NewArtisanId > 0)
+                    {
+                        // reload artisans and select the newly created one
+                        LoadArtisansCombo();
+                        cbArtisan.SelectedValue = f.NewArtisanId;
+                    }
+                    else
+                    {
+                        // user cancelled — restore previous selection
+                        cbArtisan.SelectedValue = _previousArtisanSelectedValue;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, "Error handling artisan selection: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
