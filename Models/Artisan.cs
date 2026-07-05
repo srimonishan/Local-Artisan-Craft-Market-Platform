@@ -1,4 +1,5 @@
 using System;
+using System.Data.SqlClient;
 using Craft_Market_Platform.Models;
 
 namespace Craft_Market_Platform.Models
@@ -39,6 +40,59 @@ namespace Craft_Market_Platform.Models
                 // Swallowing exceptions here keeps the example simple; callers may
                 // show user-friendly messages when an update fails.
                 return false;
+            }
+        }
+
+        // Result codes for DeleteArtisan to communicate outcome to callers
+        public enum DeleteResult
+        {
+            Deleted,
+            HasProducts,
+            Failed
+        }
+
+        // DeleteArtisan attempts to delete the artisan record from the database.
+        // It first checks the Products table for any rows that reference this
+        // artisan to avoid violating foreign key constraints. Returns a
+        // DeleteResult so the UI can show an appropriate message.
+        public static DeleteResult DeleteArtisan(int artisanId)
+        {
+            try
+            {
+                var db = new Database.DatabaseConnection();
+                using (var conn = db.GetConnection())
+                using (var cmd = conn.CreateCommand())
+                {
+                    // Check for linked products first
+                    cmd.CommandText = "SELECT COUNT(*) FROM Products WHERE ArtisanID = @id";
+                    cmd.Parameters.AddWithValue("@id", artisanId);
+                    conn.Open();
+                    var scalar = cmd.ExecuteScalar();
+                    int count = 0;
+                    if (scalar != null && scalar != DBNull.Value)
+                    {
+                        count = Convert.ToInt32(scalar);
+                    }
+
+                    if (count > 0)
+                    {
+                        // Cannot delete while products exist for this artisan
+                        return DeleteResult.HasProducts;
+                    }
+
+                    // No linked products; safe to delete
+                    cmd.Parameters.Clear();
+                    cmd.CommandText = "DELETE FROM Artisans WHERE ArtisanID = @id";
+                    cmd.Parameters.AddWithValue("@id", artisanId);
+                    int rows = cmd.ExecuteNonQuery();
+                    return rows > 0 ? DeleteResult.Deleted : DeleteResult.Failed;
+                }
+            }
+            catch
+            {
+                // For a beginner example we return Failed on exceptions and let
+                // the UI show a friendly error message.
+                return DeleteResult.Failed;
             }
         }
     }
