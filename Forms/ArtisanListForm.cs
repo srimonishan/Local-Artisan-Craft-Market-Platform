@@ -13,6 +13,8 @@ namespace Craft_Market_Platform.Forms
     {
         private DataGridView dgvArtisans;
         private Button btnClose;
+        private Button btnApprove;
+        private Button btnReject;
         private DatabaseConnection _db = new DatabaseConnection();
 
         public ArtisanListForm()
@@ -25,6 +27,8 @@ namespace Craft_Market_Platform.Forms
         {
             this.dgvArtisans = new DataGridView();
             this.btnClose = new Button();
+            this.btnApprove = new Button();
+            this.btnReject = new Button();
 
             // dgvArtisans
             this.dgvArtisans.Location = new Point(12, 12);
@@ -43,16 +47,40 @@ namespace Craft_Market_Platform.Forms
             this.btnClose.FlatStyle = FlatStyle.Flat;
             this.btnClose.FlatAppearance.BorderSize = 0;
 
+            // btnApprove
+            this.btnApprove.Text = "Approve";
+            this.btnApprove.Size = new Size(100, 30);
+            this.btnApprove.Location = new Point(456, 400);
+            this.btnApprove.BackColor = Color.FromArgb(0, 200, 83); // green
+            this.btnApprove.ForeColor = Color.White;
+            this.btnApprove.FlatStyle = FlatStyle.Flat;
+            this.btnApprove.FlatAppearance.BorderSize = 0;
+            this.btnApprove.Click += BtnApprove_Click;
+
+            // btnReject
+            this.btnReject.Text = "Reject";
+            this.btnReject.Size = new Size(100, 30);
+            this.btnReject.Location = new Point(564, 400);
+            this.btnReject.BackColor = Color.FromArgb(239, 83, 80); // red
+            this.btnReject.ForeColor = Color.White;
+            this.btnReject.FlatStyle = FlatStyle.Flat;
+            this.btnReject.FlatAppearance.BorderSize = 0;
+            this.btnReject.Click += BtnReject_Click;
+
             // Form
             this.Text = "Artisans";
             this.ClientSize = new Size(784, 441);
             this.StartPosition = FormStartPosition.CenterParent;
             this.BackColor = Color.FromArgb(10, 25, 47); // dark navy
             this.Controls.Add(this.dgvArtisans);
+            this.Controls.Add(this.btnApprove);
+            this.Controls.Add(this.btnReject);
             this.Controls.Add(this.btnClose);
 
             // Apply rounded corners to button (simple visual polish)
             this.btnClose.Region = new Region(GetRoundedRect(this.btnClose.ClientRectangle, 8));
+            this.btnApprove.Region = new Region(GetRoundedRect(this.btnApprove.ClientRectangle, 8));
+            this.btnReject.Region = new Region(GetRoundedRect(this.btnReject.ClientRectangle, 8));
         }
 
         // Returns a GraphicsPath that describes a rounded rectangle
@@ -105,6 +133,66 @@ namespace Craft_Market_Platform.Forms
             catch (Exception ex)
             {
                 MessageBox.Show(this, "Failed to load artisans: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        // Approve button handler: validates selection, confirms, updates DB and refreshes grid
+        private void BtnApprove_Click(object sender, EventArgs e)
+        {
+            if (dgvArtisans.SelectedRows.Count == 0)
+            {
+                MessageBox.Show(this, "Please select an artisan first.", "No selection", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            var artisan = dgvArtisans.SelectedRows[0].DataBoundItem as Artisan;
+            if (artisan == null)
+            {
+                MessageBox.Show(this, "Please select a valid artisan row.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            var result = MessageBox.Show(this, $"Approve {artisan.FullName}?", "Confirm Approve", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (result != DialogResult.Yes) return;
+
+            bool ok = Artisan.UpdateArtisanStatus(artisan.ArtisanID, "Approved");
+            if (ok)
+            {
+                LoadArtisans();
+            }
+            else
+            {
+                MessageBox.Show(this, "Failed to update artisan status.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        // Reject button handler: same flow but sets status to 'Rejected'
+        private void BtnReject_Click(object sender, EventArgs e)
+        {
+            if (dgvArtisans.SelectedRows.Count == 0)
+            {
+                MessageBox.Show(this, "Please select an artisan first.", "No selection", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            var artisan = dgvArtisans.SelectedRows[0].DataBoundItem as Artisan;
+            if (artisan == null)
+            {
+                MessageBox.Show(this, "Please select a valid artisan row.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            var result = MessageBox.Show(this, $"Reject {artisan.FullName}?", "Confirm Reject", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (result != DialogResult.Yes) return;
+
+            bool ok = Artisan.UpdateArtisanStatus(artisan.ArtisanID, "Rejected");
+            if (ok)
+            {
+                LoadArtisans();
+            }
+            else
+            {
+                MessageBox.Show(this, "Failed to update artisan status.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }
