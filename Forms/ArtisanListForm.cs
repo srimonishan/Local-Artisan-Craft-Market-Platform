@@ -16,6 +16,9 @@ namespace Craft_Market_Platform.Forms
         private Button btnApprove;
         private Button btnReject;
         private Button btnDelete;
+        private TextBox txtSearchArtisan;
+        private Button btnSearch;
+        private Button btnClear;
         private DatabaseConnection _db = new DatabaseConnection();
 
         public ArtisanListForm()
@@ -26,15 +29,52 @@ namespace Craft_Market_Platform.Forms
 
         private void InitializeComponent()
         {
+            this.txtSearchArtisan = new TextBox();
+            this.btnSearch = new Button();
+            this.btnClear = new Button();
             this.dgvArtisans = new DataGridView();
             this.btnClose = new Button();
             this.btnApprove = new Button();
             this.btnReject = new Button();
             this.btnDelete = new Button();
 
-            // dgvArtisans
-            this.dgvArtisans.Location = new Point(12, 12);
-            this.dgvArtisans.Size = new Size(760, 380);
+            // Search box and buttons (above the grid)
+            this.txtSearchArtisan.Location = new Point(12, 12);
+            this.txtSearchArtisan.Size = new Size(400, 30);
+            this.txtSearchArtisan.BackColor = Color.FromArgb(20, 35, 60);
+            this.txtSearchArtisan.ForeColor = Color.White;
+            this.txtSearchArtisan.BorderStyle = BorderStyle.FixedSingle;
+            this.txtSearchArtisan.KeyDown += (s, e) =>
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    e.Handled = true;
+                    e.SuppressKeyPress = true;
+                    BtnSearch_Click(s, EventArgs.Empty);
+                }
+            };
+
+            this.btnSearch.Text = "Search";
+            this.btnSearch.Size = new Size(100, 30);
+            this.btnSearch.Location = new Point(420, 12);
+            this.btnSearch.BackColor = Color.FromArgb(10, 132, 255); // blue
+            this.btnSearch.ForeColor = Color.White;
+            this.btnSearch.FlatStyle = FlatStyle.Flat;
+            this.btnSearch.FlatAppearance.BorderSize = 0;
+            this.btnSearch.Click += BtnSearch_Click;
+
+            this.btnClear.Text = "Clear";
+            this.btnClear.Size = new Size(100, 30);
+            this.btnClear.Location = new Point(528, 12);
+            this.btnClear.BackColor = Color.FromArgb(125, 125, 130); // neutral
+            this.btnClear.ForeColor = Color.White;
+            this.btnClear.FlatStyle = FlatStyle.Flat;
+            this.btnClear.FlatAppearance.BorderSize = 0;
+            this.btnClear.Click += BtnClear_Click;
+
+            // dgvArtisans (moved down to make room for search controls)
+            this.dgvArtisans.Location = new Point(12, 48);
+            this.dgvArtisans.Size = new Size(760, 344);
             this.dgvArtisans.ReadOnly = true;
             this.dgvArtisans.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             this.dgvArtisans.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
@@ -84,6 +124,9 @@ namespace Craft_Market_Platform.Forms
             this.ClientSize = new Size(784, 441);
             this.StartPosition = FormStartPosition.CenterParent;
             this.BackColor = Color.FromArgb(10, 25, 47); // dark navy
+            this.Controls.Add(this.txtSearchArtisan);
+            this.Controls.Add(this.btnSearch);
+            this.Controls.Add(this.btnClear);
             this.Controls.Add(this.dgvArtisans);
             this.Controls.Add(this.btnApprove);
             this.Controls.Add(this.btnReject);
@@ -95,6 +138,8 @@ namespace Craft_Market_Platform.Forms
             this.btnApprove.Region = new Region(GetRoundedRect(this.btnApprove.ClientRectangle, 8));
             this.btnReject.Region = new Region(GetRoundedRect(this.btnReject.ClientRectangle, 8));
             this.btnDelete.Region = new Region(GetRoundedRect(this.btnDelete.ClientRectangle, 8));
+            this.btnSearch.Region = new Region(GetRoundedRect(this.btnSearch.ClientRectangle, 8));
+            this.btnClear.Region = new Region(GetRoundedRect(this.btnClear.ClientRectangle, 8));
         }
 
         // Returns a GraphicsPath that describes a rounded rectangle
@@ -111,7 +156,8 @@ namespace Craft_Market_Platform.Forms
         }
 
         // Load artisans from DB, create Artisan objects and bind to grid
-        private void LoadArtisans()
+        // Optional searchText filters by FullName using a LIKE query (case-insensitive)
+        private void LoadArtisans(string searchText = null)
         {
             try
             {
@@ -119,7 +165,13 @@ namespace Craft_Market_Platform.Forms
                 using (var conn = _db.GetConnection())
                 using (var cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = "SELECT ArtisanID, FullName, Email, Phone, Address, Status, CreatedAt FROM Artisans ORDER BY ArtisanID DESC";
+                    cmd.CommandText = "SELECT ArtisanID, FullName, Email, Phone, Address, Status, CreatedAt FROM Artisans";
+                    if (!string.IsNullOrWhiteSpace(searchText))
+                    {
+                        cmd.CommandText += " WHERE UPPER(FullName) LIKE UPPER(@search)";
+                        cmd.Parameters.AddWithValue("@search", "%" + searchText + "%");
+                    }
+                    cmd.CommandText += " ORDER BY ArtisanID DESC";
                     conn.Open();
                     using (var reader = cmd.ExecuteReader())
                     {
@@ -246,6 +298,27 @@ namespace Craft_Market_Platform.Forms
             {
                 MessageBox.Show(this, "Failed to delete artisan.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        // Search button handler: reloads grid with optional name filter
+        private void BtnSearch_Click(object sender, EventArgs e)
+        {
+            var text = this.txtSearchArtisan.Text?.Trim();
+            if (string.IsNullOrEmpty(text))
+            {
+                LoadArtisans();
+            }
+            else
+            {
+                LoadArtisans(text);
+            }
+        }
+
+        // Clear search and reload full list
+        private void BtnClear_Click(object sender, EventArgs e)
+        {
+            this.txtSearchArtisan.Text = string.Empty;
+            LoadArtisans();
         }
     }
 }
