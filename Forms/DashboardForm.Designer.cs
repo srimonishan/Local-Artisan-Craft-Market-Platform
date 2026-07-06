@@ -15,7 +15,9 @@ namespace Craft_Market_Platform.Forms
 
         private void InitializeComponent()
         {
-            this.lblWelcome = new System.Windows.Forms.Label();
+            this.lblWelcome       = new System.Windows.Forms.Label();
+            this.btnSearchItems   = new System.Windows.Forms.Button();
+            this.btnSalesReport   = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // lblWelcome
@@ -53,6 +55,37 @@ namespace Craft_Market_Platform.Forms
             this.btnViewArtisans.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnViewArtisans.FlatAppearance.BorderSize = 0;
             this.btnViewArtisans.Click += new System.EventHandler(this.btnViewArtisans_Click);
+
+            // 
+            // btnSearchItems
+            // 
+            this.btnSearchItems = new System.Windows.Forms.Button();
+            this.btnSearchItems.Location = new System.Drawing.Point(500, 80);
+            this.btnSearchItems.Name = "btnSearchItems";
+            this.btnSearchItems.Size = new System.Drawing.Size(120, 30);
+            this.btnSearchItems.TabIndex = 5;
+            this.btnSearchItems.Text = "Search Items";
+            this.btnSearchItems.BackColor = System.Drawing.Color.FromArgb(48, 140, 90);
+            this.btnSearchItems.ForeColor = System.Drawing.Color.White;
+            this.btnSearchItems.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSearchItems.FlatAppearance.BorderSize = 0;
+            this.btnSearchItems.Click += new System.EventHandler(this.btnSearchItems_Click);
+
+            // 
+            // btnSalesReport
+            // 
+            this.btnSalesReport = new System.Windows.Forms.Button();
+            this.btnSalesReport.Location = new System.Drawing.Point(635, 80);
+            this.btnSalesReport.Name = "btnSalesReport";
+            this.btnSalesReport.Size = new System.Drawing.Size(120, 30);
+            this.btnSalesReport.TabIndex = 6;
+            this.btnSalesReport.Text = "Sales Report";
+            this.btnSalesReport.BackColor = System.Drawing.Color.FromArgb(180, 120, 0);
+            this.btnSalesReport.ForeColor = System.Drawing.Color.White;
+            this.btnSalesReport.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSalesReport.FlatAppearance.BorderSize = 0;
+            this.btnSalesReport.Click += new System.EventHandler(this.btnSalesReport_Click);
+
             // 
             // dgvProducts
             // 
@@ -118,6 +151,8 @@ namespace Craft_Market_Platform.Forms
             this.Controls.Add(this.btnAddCraftItem);
             this.Controls.Add(this.btnDelete);
             this.Controls.Add(this.btnViewArtisans);
+            this.Controls.Add(this.btnSearchItems);
+            this.Controls.Add(this.btnSalesReport);
             this.Controls.Add(this.dgvProducts);
             this.Controls.Add(this.lblTotalProducts);
             this.Controls.Add(this.lblTotalArtisans);
@@ -136,6 +171,8 @@ namespace Craft_Market_Platform.Forms
         private System.Windows.Forms.DataGridView dgvProducts;
         private System.Windows.Forms.Button btnDelete;
         private System.Windows.Forms.Button btnViewArtisans;
+        private System.Windows.Forms.Button btnSearchItems;
+        private System.Windows.Forms.Button btnSalesReport;
         private System.Windows.Forms.Label lblTotalProducts;
         private System.Windows.Forms.Label lblTotalArtisans;
         private System.Windows.Forms.Label lblTotalOrders;

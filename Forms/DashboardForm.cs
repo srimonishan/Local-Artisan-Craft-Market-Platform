@@ -47,6 +47,24 @@ namespace Craft_Market_Platform.Forms
             }
         }
 
+        // Feature 9: Search Items — opens the polymorphic search form
+        private void btnSearchItems_Click(object sender, EventArgs e)
+        {
+            using (var f = new SearchItemsForm())
+            {
+                f.ShowDialog(this);
+            }
+        }
+
+        // Feature 10: Sales Report — opens the report form
+        private void btnSalesReport_Click(object sender, EventArgs e)
+        {
+            using (var f = new SalesReportForm())
+            {
+                f.ShowDialog(this);
+            }
+        }
+
         private void LoadProducts()
         {
             try
