@@ -20,8 +20,10 @@ namespace Craft_Market_Platform.Forms
         private Label        lblTopProduct;
         private DataGridView dgvBreakdown;
         private Label        lblBreakdownTitle;
+        private Button       btnDownloadPdf;
 
         private readonly SalesReport _report = new SalesReport();
+        private SalesReport.SalesReportData _currentData;
 
         // ── Constructor ─────────────────────────────────────────────────────────
         public SalesReportForm()
@@ -38,7 +40,8 @@ namespace Craft_Market_Platform.Forms
                 btnGenerateReport.Text    = "Loading…";
 
                 // One method call — all SQL is hidden inside SalesReport (Abstraction)
-                SalesReport.SalesReportData data = _report.GenerateReport();
+                _currentData = _report.GenerateReport();
+                SalesReport.SalesReportData data = _currentData;
 
                 // Populate summary labels
                 lblOrders.Text     = $"📦  Total Orders:      {data.TotalOrders}";
@@ -53,6 +56,7 @@ namespace Craft_Market_Platform.Forms
                 pnlSummary.Visible    = true;
                 dgvBreakdown.Visible  = true;
                 lblBreakdownTitle.Visible = true;
+                btnDownloadPdf.Visible = true;
             }
             catch (Exception ex)
             {
@@ -63,6 +67,33 @@ namespace Craft_Market_Platform.Forms
             {
                 btnGenerateReport.Enabled = true;
                 btnGenerateReport.Text    = "Generate Report";
+            }
+        }
+
+        private void BtnDownloadPdf_Click(object sender, EventArgs e)
+        {
+            if (_currentData == null)
+            {
+                MessageBox.Show(this, "Please generate the report first.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            using (SaveFileDialog sfd = new SaveFileDialog())
+            {
+                sfd.Filter = "PDF Documents (*.pdf)|*.pdf";
+                sfd.FileName = "SalesReport_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".pdf";
+                if (sfd.ShowDialog() == DialogResult.OK)
+                {
+                    try
+                    {
+                        _report.GeneratePdfReport(_currentData, sfd.FileName);
+                        MessageBox.Show(this, "PDF Report generated successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(this, "Failed to generate PDF: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
             }
         }
 
@@ -78,6 +109,7 @@ namespace Craft_Market_Platform.Forms
             this.lblTopProduct    = new Label();
             this.dgvBreakdown     = new DataGridView();
             this.lblBreakdownTitle = new Label();
+            this.btnDownloadPdf   = new Button();
 
             this.pnlSummary.SuspendLayout();
             this.SuspendLayout();
@@ -100,6 +132,19 @@ namespace Craft_Market_Platform.Forms
             this.btnGenerateReport.FlatAppearance.BorderSize = 0;
             this.btnGenerateReport.Cursor    = Cursors.Hand;
             this.btnGenerateReport.Click    += BtnGenerateReport_Click;
+
+            // ── Download PDF button ───────────────────────────────────────────
+            this.btnDownloadPdf.Location  = new System.Drawing.Point(210, 65);
+            this.btnDownloadPdf.Size      = new System.Drawing.Size(180, 40);
+            this.btnDownloadPdf.Text      = "Download PDF";
+            this.btnDownloadPdf.Font      = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.btnDownloadPdf.BackColor = System.Drawing.Color.FromArgb(40, 167, 69); // Green
+            this.btnDownloadPdf.ForeColor = System.Drawing.Color.White;
+            this.btnDownloadPdf.FlatStyle = FlatStyle.Flat;
+            this.btnDownloadPdf.FlatAppearance.BorderSize = 0;
+            this.btnDownloadPdf.Cursor    = Cursors.Hand;
+            this.btnDownloadPdf.Visible   = false;
+            this.btnDownloadPdf.Click    += BtnDownloadPdf_Click;
 
             // ── Summary panel ─────────────────────────────────────────────────
             this.pnlSummary.Location  = new System.Drawing.Point(20, 120);
@@ -180,6 +225,7 @@ namespace Craft_Market_Platform.Forms
 
             this.Controls.Add(this.lblTitle);
             this.Controls.Add(this.btnGenerateReport);
+            this.Controls.Add(this.btnDownloadPdf);
             this.Controls.Add(this.pnlSummary);
             this.Controls.Add(this.lblBreakdownTitle);
             this.Controls.Add(this.dgvBreakdown);

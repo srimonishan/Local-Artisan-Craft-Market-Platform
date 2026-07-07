@@ -2,6 +2,9 @@ using System;
 using System.Data;
 using System.Data.SqlClient;
 using Craft_Market_Platform.Database;
+using System.IO;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
 
 namespace Craft_Market_Platform.Models
 {
@@ -120,6 +123,62 @@ namespace Craft_Market_Platform.Models
             }
 
             return report;
+        }
+
+        // Generate PDF Report
+        public void GeneratePdfReport(SalesReportData data, string filePath)
+        {
+            Document doc = new Document(PageSize.A4, 50, 50, 50, 50);
+            PdfWriter.GetInstance(doc, new FileStream(filePath, FileMode.Create));
+            
+            doc.Open();
+            
+            // Title
+            Font titleFont = FontFactory.GetFont("Arial", 20, Font.BOLD);
+            Paragraph title = new Paragraph("Sales Report\n\n", titleFont);
+            title.Alignment = Element.ALIGN_CENTER;
+            doc.Add(title);
+            
+            // Summary
+            Font normalFont = FontFactory.GetFont("Arial", 12, Font.NORMAL);
+            Font boldFont = FontFactory.GetFont("Arial", 12, Font.BOLD);
+            
+            doc.Add(new Paragraph($"Total Orders: {data.TotalOrders}", normalFont));
+            doc.Add(new Paragraph($"Total Revenue: RM {data.TotalRevenue:N2}", normalFont));
+            doc.Add(new Paragraph($"Total Items Sold: {data.TotalItemsSold}", normalFont));
+            doc.Add(new Paragraph($"Top Product: {data.TopProduct}\n\n", normalFont));
+            
+            // Breakdown Table
+            if (data.OrderBreakdown != null && data.OrderBreakdown.Rows.Count > 0)
+            {
+                PdfPTable table = new PdfPTable(data.OrderBreakdown.Columns.Count);
+                table.WidthPercentage = 100;
+                
+                // Headers
+                foreach (DataColumn column in data.OrderBreakdown.Columns)
+                {
+                    PdfPCell cell = new PdfPCell(new Phrase(column.ColumnName, boldFont));
+                    cell.BackgroundColor = BaseColor.LIGHT_GRAY;
+                    table.AddCell(cell);
+                }
+                
+                // Data
+                foreach (DataRow row in data.OrderBreakdown.Rows)
+                {
+                    foreach (object item in row.ItemArray)
+                    {
+                        table.AddCell(new Phrase(item.ToString(), normalFont));
+                    }
+                }
+                
+                doc.Add(table);
+            }
+            else
+            {
+                doc.Add(new Paragraph("No product breakdown data available.", normalFont));
+            }
+            
+            doc.Close();
         }
     }
 }
